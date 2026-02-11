@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+
+type Props = CollectionEntry<'blog'>['data'] & {
+  headings?: MarkdownHeading[];
+  readingTime?: number;
+};
+
+const { title, description, pubDate, updatedDate, tags, headings, readingTime } = Astro.props;
+
+// Format date helper
+function formatDate(date: Date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="lg:grid lg:grid-cols-[1fr_200px] gap-8 items-start">
+    <article class="prose prose-invert prose-lg max-w-none hover:prose-a:text-teal-400 prose-a:text-teal-500 prose-headings:text-slate-100 prose-p:text-slate-300 prose-pre:border prose-pre:border-slate-800 prose-pre:bg-slate-900 rounded-lg relative">
+      <header class="mb-10 text-center">
+          {tags && (
+          <div class="flex gap-2 justify-center mb-4">
+            {tags.map((tag) => (
+              <a href={`/tags/${tag}`} class="text-xs font-mono text-teal-400 bg-teal-400/10 px-2 py-1 rounded hover:bg-teal-400/20 transition-colors no-underline">
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )}
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-balance">{title}</h1>
+        <div class="text-slate-400 font-mono text-sm flex items-center justify-center gap-4">
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+          {readingTime && (
+            <>
+              <span>&bull;</span>
+              <span>{readingTime} min read</span>
+            </>
+          )}
+          {updatedDate && (
+             <>
+               <span>&bull;</span>
+               <span class="italic">Updated: {formatDate(updatedDate)}</span>
+             </>
+          )}
+        </div>
+        <hr class="border-slate-800 mt-8" />
+      </header>
+      
+      <div class="prose-code:before:content-none prose-code:after:content-none">
+        <slot />
+      </div>
+    </article>
+
+    <aside class="hidden lg:block sticky top-24">
+      {headings && headings.length > 0 && (
+        <TableOfContents headings={headings} />
+      )}
+    </aside>
+  </div>
+
+  <script>
+    // Copy to clipboard functionality
+    const copyButtonLabel = "Copy";
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const copyButton = document.createElement("button");
+      copyButton.className = "copy-code absolute right-2 top-2 text-xs font-mono text-slate-400 hover:text-teal-400 bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded border border-slate-700 transition-colors z-10";
+      copyButton.innerHTML = copyButtonLabel;
+
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+      
+      // wrap codeblock in the wrapper
+      if (codeBlock.parentNode) {
+          codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+          wrapper.appendChild(codeBlock);
+      }
+
+      copyButton.addEventListener("click", async () => {
+        const code = codeBlock.querySelector("code");
+        const text = code?.innerText;
+
+        await navigator.clipboard.writeText(text || "");
+
+        copyButton.innerText = "Copied!";
+        setTimeout(() => {
+          copyButton.innerText = copyButtonLabel;
+        }, 2000);
+      });
+    }
+  </script>
+</BaseLayout>

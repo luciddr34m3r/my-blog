@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "About Me";
+const description = "Security researcher, policy analyst, and builder.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="py-12 prose prose-invert prose-lg max-w-none">
+    <h1 class="text-4xl font-bold tracking-tight mb-8">Hello, World.</h1>
+    
+    <p class="lead text-xl text-slate-300">
+      I operate at the intersection of offensive security research and national technology policy.
+    </p>
+
+    <div class="not-prose grid gap-6 md:grid-cols-2 my-12">
+      <div class="p-6 bg-slate-900 rounded-lg border border-slate-800">
+        <h3 class="text-xl font-bold text-teal-400 mb-2">Technical Focus</h3>
+        <ul class="text-slate-400 space-y-2 list-disc list-inside">
+          <li>Vulnerability Research</li>
+          <li>System Internals</li>
+          <li>AI Safety & Robustness</li>
+          <li>Hardware Hacking</li>
+        </ul>
+      </div>
+      <div class="p-6 bg-slate-900 rounded-lg border border-slate-800">
+        <h3 class="text-xl font-bold text-teal-400 mb-2">Policy Interests</h3>
+        <ul class="text-slate-400 space-y-2 list-disc list-inside">
+          <li>Critical Infrastructure Resilience</li>
+          <li>Right to Repair</li>
+          <li>Dual-use Technologies</li>
+          <li>Supply Chain Security</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Background</h2>
+    <p>
+      With over a decade of experience in cybersecurity, I've worked on everything from securing embedded devices in industrial control systems to auditing large-scale cloud infrastructure. My work focuses on finding the cracks in complex systems before they can be exploited by adversaries.
+    </p>
+
+    <h2>Philosophy</h2>
+    <p>
+      I believe that understanding how to break systems is the only way to truly understand how to build them securely. This blog serves as a public notebook for my research, thoughts, and experiments.
+    </p>
+
+    <hr class="border-slate-800 my-8" />
+
+    <h3>Contact</h3>
+    <p>
+      The best way to reach me is via <a href="https://twitter.com/generic_handle" class="text-teal-400 no-underline hover:underline">Twitter</a> or email at <code class="text-sm bg-slate-800 px-1 py-0.5 rounded text-teal-300">hello [at] example [dot] com</code>.
+      <br/>
+      <small class="text-slate-500">PGP Key available upon request.</small>
+    </p>
+  </section>
+</BaseLayout>
