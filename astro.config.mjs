@@ -8,7 +8,8 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://luciddr34m3r.github.io/my-blog', // TODO: Replace with actual site URL
+  site: 'https://luciddr34m3r.github.io',
+  base: '/my-blog',
   vite: {
     plugins: [tailwindcss()]
   },
